@@ -53,11 +53,8 @@
                 <span>Firebase Connected</span>
             </div>
 
-            <button onclick="resetSampleData()" class="text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 font-semibold text-slate-700">
-                <i class="fa-solid fa-rotate-left me-1"></i> Seed Sample
-            </button>
             <a href="https://conditions-onlineimmi-homeaffairs-au.netlify.app/" target="_blank" class="text-xs px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-bold shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open User Portal ↘
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open User Portal 
             </a>
         </div>
     </div>
@@ -95,63 +92,50 @@
                     <div>
                         <label class="block font-bold text-slate-700 mb-1">Country of Document *</label>
                         <select id="admCountry" class="vevo-select w-full" required>
-                                                               <option value="">Country</option>
-                                   <!-- South Asia (Primary Source of Students & Skilled Migrants) -->
-                                   <option value="BANGLADESH" selected>BANGLADESH</option>
-                                   <option value="INDIA">INDIA</option>
-                                   <option value="PAKISTAN">PAKISTAN</option>
-                                   <option value="NEPAL">NEPAL</option>
-                                   <option value="SRI LANKA">SRI LANKA</option>
-                                   <option value="BHUTAN">BHUTAN</option>
-                                   
-                                   <!-- Southeast Asia & East Asia (Major Workforce & Student Hubs) -->
-                                   <option value="PHILIPPINES">PHILIPPINES</option>
-                                   <option value="VIETNAM">VIETNAM</option>
-                                   <option value="INDONESIA">INDONESIA</option>
-                                   <option value="MALAYSIA">MALAYSIA</option>
-                                   <option value="THAILAND">THAILAND</option>
-                                   <option value="CHINA">CHINA</option>
-                                   <option value="HONG KONG">HONG KONG (SAR CHINA)</option>
-                                   <option value="TAIWAN">TAIWAN</option>
-                                   <option value="SOUTH KOREA">SOUTH KOREA</option>
-                                   <option value="JAPAN">JAPAN</option>
-                                   <option value="SINGAPORE">SINGAPORE</option>
-                                  
-                                  <!-- Middle East & Gulf (Expat Workforce Hubs) -->
-                                  <option value="UNITED ARAB EMIRATES">UNITED ARAB EMIRATES</option>
-                                  <option value="SAUDI ARABIA">SAUDI ARABIA</option>
-                                  <option value="QATAR">QATAR</option>
-                                  <option value="KUWAIT">KUWAIT</option>
-                                  <option value="OMAN">OMAN</option>
-                                  <option value="BAHRAIN">BAHRAIN</option>
-                                  <option value="TURKEY">TURKEY</option>
-                                  <option value="LEBANON">LEBANON</option>
-                                  <option value="IRAN">IRAN</option>
-                                  
-                                  <!-- Oceania & Pacific (Working Holiday & Bilateral Streams) -->
-                                  <option value="FIJI">FIJI</option>
-                                  <option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
-                                  <option value="NEW ZEALAND">NEW ZEALAND</option>
-                                  
-                                  <!-- Europe & UK (Working Holiday & Skilled Professionals) -->
-                                  <option value="UNITED KINGDOM">UNITED KINGDOM (BRITISH CITIZEN)</option>
-                                  <option value="IRELAND">IRELAND</option>
-                                  <option value="GERMANY">GERMANY</option>
-                                  <option value="FRANCE">FRANCE</option>
-                                  <option value="ITALY">ITALY</option>
-                                  <option value="SPAIN">SPAIN</option>
-                                  
-                                  <!-- Americas & Africa (Skilled Streams) -->
-                                  <option value="CANADA">CANADA</option>
-                                  <option value="UNITED STATES">UNITED STATES OF AMERICA</option>
-                                  <option value="BRAZIL">BRAZIL</option>
-                                  <option value="COLOMBIA">COLOMBIA</option>
-                                  <option value="SOUTH AFRICA">SOUTH AFRICA</option>
-                                  <option value="KENYA">KENYA</option>
-                                  <option value="NIGERIA">NIGERIA</option>
-                                  
-                                  <!-- General Option -->
-                                  <option value="OTHER">OTHER NATION</</option>
+                            <option value="">Country</option>
+                            <option value="BANGLADESH" selected>BANGLADESH</option>
+                            <option value="INDIA">INDIA</option>
+                            <option value="PAKISTAN">PAKISTAN</option>
+                            <option value="NEPAL">NEPAL</option>
+                            <option value="SRI LANKA">SRI LANKA</option>
+                            <option value="BHUTAN">BHUTAN</option>
+                            <option value="PHILIPPINES">PHILIPPINES</option>
+                            <option value="VIETNAM">VIETNAM</option>
+                            <option value="INDONESIA">INDONESIA</option>
+                            <option value="MALAYSIA">MALAYSIA</option>
+                            <option value="THAILAND">THAILAND</option>
+                            <option value="CHINA">CHINA</option>
+                            <option value="HONG KONG">HONG KONG (SAR CHINA)</option>
+                            <option value="TAIWAN">TAIWAN</option>
+                            <option value="SOUTH KOREA">SOUTH KOREA</option>
+                            <option value="JAPAN">JAPAN</option>
+                            <option value="SINGAPORE">SINGAPORE</option>
+                            <option value="UNITED ARAB EMIRATES">UNITED ARAB EMIRATES</option>
+                            <option value="SAUDI ARABIA">SAUDI ARABIA</option>
+                            <option value="QATAR">QATAR</option>
+                            <option value="KUWAIT">KUWAIT</option>
+                            <option value="OMAN">OMAN</option>
+                            <option value="BAHRAIN">BAHRAIN</option>
+                            <option value="TURKEY">TURKEY</option>
+                            <option value="LEBANON">LEBANON</option>
+                            <option value="IRAN">IRAN</option>
+                            <option value="FIJI">FIJI</option>
+                            <option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
+                            <option value="NEW ZEALAND">NEW ZEALAND</option>
+                            <option value="UNITED KINGDOM">UNITED KINGDOM (BRITISH CITIZEN)</option>
+                            <option value="IRELAND">IRELAND</option>
+                            <option value="GERMANY">GERMANY</option>
+                            <option value="FRANCE">FRANCE</option>
+                            <option value="ITALY">ITALY</option>
+                            <option value="SPAIN">SPAIN</option>
+                            <option value="CANADA">CANADA</option>
+                            <option value="UNITED STATES">UNITED STATES OF AMERICA</option>
+                            <option value="BRAZIL">BRAZIL</option>
+                            <option value="COLOMBIA">COLOMBIA</option>
+                            <option value="SOUTH AFRICA">SOUTH AFRICA</option>
+                            <option value="KENYA">KENYA</option>
+                            <option value="NIGERIA">NIGERIA</option>
+                            <option value="OTHER">OTHER NATION</option>
                         </select>
                     </div>
                     <div>
@@ -216,7 +200,7 @@
                         Live Visa Records in Database (<span id="recordCount">0</span>)
                     </h2>
                     <div class="text-xs text-slate-500">
-                        Changes here are immediately searchable by users in <span class="font-mono text-blue-700">vevo_user.html</span>
+                        Changes here are immediately searchable by users in <span class="font-mono text-blue-700">index_2.html</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -253,114 +237,67 @@
     </div>
 
     <script>
-        // 🔥 আপনার দেওয়া Firebase কনফিগারেশন
-        const firebaseConfig = {
-            apiKey: "AIzaSyDgiL1iFUfbs1iaP6v_YPadbn49eiku1WE",
-            authDomain: "webpagecybersecurity.firebaseapp.com",
-            projectId: "webpagecybersecurity",
-            storageBucket: "webpagecybersecurity.firebasestorage.app",
-            messagingSenderId: "664983277240",
-            appId: "1:664983277240:web:f7e0352f673713fe596e4d"
-        };
+        // 🔥 আপনার দেওয়া নতুন Firebase Configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDZ-V08igXs_BJ79YLS0lNYe971fcAhPJk",
+  authDomain: "ab-consultant-ca.firebaseapp.com",
+  databaseURL: "https://ab-consultant-ca-default-rtdb.firebaseio.com",
+  projectId: "ab-consultant-ca",
+  storageBucket: "ab-consultant-ca.firebasestorage.app",
+  messagingSenderId: "599782762567",
+  appId: "1:599782762567:web:7b7070840a92672e116962",
+  measurementId: "G-2NG83VVJSH"
+};
 
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const database = firebase.database();
 
-        const DB_KEY = "VEVO_PORTAL_DATABASE_STORE";
-        let localRecords = [];
+        let liveRecords = [];
 
-        const SAMPLE_DATA = [
-            {
-                id: "VEVO-1001",
-                familyName: "RAHMAN",
-                givenNames: "MD ABDUR",
-                dob: "12/06/1992",
-                docNumber: "A12345678",
-                docCountry: "BANGLADESH",
-                grantNumber: "9876543210123",
-                visaDescription: "Student",
-                subclass: "TU-500",
-                status: "In Effect",
-                grantDate: "15/01/2025",
-                expiryDate: "15/03/2028",
-                entries: "Multiple entries",
-                location: "Offshore",
-                conditions: [
-                    "8105 - WORK LIMITATION (48 HOURS PER FORTNIGHT)",
-                    "8202 - MEET COURSE REQUIREMENTS & MAINTAIN ENROLMENT",
-                    "8501 - MAINTAIN ADEQUATE HEALTH INSURANCE (OSHC)"
-                ]
-            },
-            {
-                id: "VEVO-1002",
-                familyName: "ISLAM",
-                givenNames: "SHAHIDUL",
-                dob: "20/04/1988",
-                docNumber: "B87654321",
-                docCountry: "BANGLADESH",
-                grantNumber: "1122334455667",
-                visaDescription: "Temporary Skill Shortage",
-                subclass: "TSS-482",
-                status: "In Effect",
-                grantDate: "05/08/2024",
-                expiryDate: "05/08/2027",
-                entries: "Multiple entries",
-                location: "Onshore",
-                conditions: [
-                    "8607 - MUST WORK ONLY IN NOMINATED OCCUPATION",
-                    "8501 - MAINTAIN ADEQUATE HEALTH COVER"
-                ]
-            }
-        ];
-
-        // লোড ও লিসেনার
+        // সরাসরি ফায়ারবেস ক্লাউডের সাথে রিয়েল-টাইম লিসেনার
         function initFirebaseSync() {
             database.ref('vevo_records').on('value', (snapshot) => {
                 const fbData = snapshot.val();
-                localRecords = [];
+                liveRecords = [];
                 if (fbData) {
                     Object.keys(fbData).forEach(key => {
-                        localRecords.push(fbData[key]);
+                        liveRecords.push(fbData[key]);
                     });
                 }
-                // ব্যাকআপ হিসেবে লোকাল স্টোরেজেও রাখা
-                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
                 renderTable();
             }, (error) => {
-                console.warn("Firebase fetch error, falling back to localStorage:", error);
-                const stored = localStorage.getItem(DB_KEY);
-                localRecords = stored ? JSON.parse(stored) : SAMPLE_DATA;
-                renderTable();
+                console.error("Firebase connection error:", error);
+                document.getElementById("recordsTableBody").innerHTML = `<tr><td colspan="7" class="p-6 text-center text-red-500 font-bold">Failed to connect to Firebase. Check database rules.</td></tr>`;
             });
         }
 
         function loadAllRecords() {
             database.ref('vevo_records').once('value').then((snapshot) => {
                 const fbData = snapshot.val();
-                localRecords = [];
+                liveRecords = [];
                 if (fbData) {
                     Object.keys(fbData).forEach(key => {
-                        localRecords.push(fbData[key]);
+                        liveRecords.push(fbData[key]);
                     });
                 }
-                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
                 renderTable();
             });
         }
 
         function renderTable() {
-            document.getElementById("recordCount").innerText = localRecords.length;
+            document.getElementById("recordCount").innerText = liveRecords.length;
             const tbody = document.getElementById("recordsTableBody");
             tbody.innerHTML = "";
 
-            if (localRecords.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">No records found in database. Add a new record above or click "Seed Sample".</td></tr>`;
+            if (liveRecords.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Database is empty. Add a new visa record using the form above.</td></tr>`;
                 return;
             }
 
-            localRecords.forEach(rec => {
+            liveRecords.forEach(rec => {
                 const tr = document.createElement("tr");
                 tr.className = "hover:bg-slate-50 transition";
                 tr.innerHTML = `
@@ -425,27 +362,17 @@
             };
 
             try {
-                // ১. ফায়ারবেসে সেভ করা (পাসপোর্ট নম্বরকে কি/আইডি হিসেবে রাখা)
+                // সরাসরি ফায়ারবেস ক্লাউডে সেভ হবে
                 await database.ref('vevo_records/' + docNumber).set(record);
-
-                // ২. লোকাল কপি আপডেট
-                const existingIdx = localRecords.findIndex(r => r.docNumber === docNumber);
-                if (existingIdx !== -1) {
-                    localRecords[existingIdx] = record;
-                } else {
-                    localRecords.unshift(record);
-                }
-                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
 
                 statusMsg.innerText = "✅ Successfully saved to Firebase!";
                 statusMsg.classList.remove("hidden");
                 setTimeout(() => statusMsg.classList.add("hidden"), 3500);
 
                 cancelEdit();
-                renderTable();
             } catch (err) {
                 console.error("Firebase save error:", err);
-                alert("Error saving to Firebase. Please check database permissions.");
+                alert("Error saving to Firebase: " + err.message + "\nPlease verify your Realtime Database rules allow read/write.");
             } finally {
                 saveBtn.disabled = false;
                 btnText.innerText = "Save to Firebase & Sync";
@@ -453,7 +380,7 @@
         }
 
         function editRecord(docNum) {
-            const rec = localRecords.find(r => r.docNumber === docNum);
+            const rec = liveRecords.find(r => r.docNumber === docNum);
             if (!rec) return;
 
             document.getElementById("editRecordId").value = rec.id || "";
@@ -487,30 +414,10 @@
             if (!confirm(`Are you sure you want to delete visa record for passport: ${docNum}?`)) return;
 
             try {
-                // ফায়ারবেস থেকে রিমুভ
                 await database.ref('vevo_records/' + docNum).remove();
-
-                localRecords = localRecords.filter(r => r.docNumber !== docNum);
-                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
-                renderTable();
             } catch (err) {
                 console.error("Firebase deletion error:", err);
-                alert("Failed to delete from Firebase.");
-            }
-        }
-
-        async function resetSampleData() {
-            if (!confirm("This will upload default sample records to Firebase. Continue?")) return;
-
-            try {
-                for (let rec of SAMPLE_DATA) {
-                    await database.ref('vevo_records/' + rec.docNumber).set(rec);
-                }
-                loadAllRecords();
-                alert("Sample records seeded successfully to Firebase!");
-            } catch (err) {
-                console.error("Seeding error:", err);
-                alert("Failed to seed data.");
+                alert("Failed to delete from Firebase: " + err.message);
             }
         }
 
