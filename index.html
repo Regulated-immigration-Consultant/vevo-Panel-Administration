@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEVO Admin Control Panel | Australian Government Visa Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Firebase App & Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
+        }
+        .vevo-input, .vevo-select {
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 7px 10px;
+            font-size: 13px;
+            outline: none;
+            background-color: #fff;
+            color: #111;
+        }
+        .vevo-input:focus, .vevo-select:focus {
+            border-color: #0369a1;
+            box-shadow: 0 0 0 2px rgba(3, 105, 161, 0.15);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Admin Header -->
+    <div class="max-w-6xl mx-auto mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-blue-900 text-white rounded-lg flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900">VEVO Administration Database</h1>
+                <p class="text-xs text-slate-500">Department of Home Affairs • Firebase Live Cloud Integration</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Firebase Status Indicator -->
+            <div id="fbStatusBadge" class="text-xs px-3 py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-semibold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Firebase Connected</span>
+            </div>
+
+            <button onclick="resetSampleData()" class="text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 font-semibold text-slate-700">
+                <i class="fa-solid fa-rotate-left me-1"></i> Seed Sample
+            </button>
+            <a href="https://conditions-onlineimmi-homeaffairs-au.netlify.app/" target="_blank" class="text-xs px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-bold shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open User Portal ↘
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-6xl mx-auto space-y-6">
+
+        <!-- Form: Add or Edit Record -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <h2 id="formTitle" class="text-base font-bold text-slate-900 mb-4 pb-2 border-b flex items-center gap-2">
+                <i class="fa-solid fa-user-plus text-blue-600"></i> Add New Visa Record (Firebase Live)
+            </h2>
+
+            <form id="visaRecordForm" onsubmit="handleSaveRecord(event)">
+                <input type="hidden" id="editRecordId" value="">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Family / Surname *</label>
+                        <input type="text" id="admFamilyName" placeholder="e.g. RAHMAN" required class="vevo-input w-full uppercase">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Given Name(s) *</label>
+                        <input type="text" id="admGivenNames" placeholder="e.g. MD ABDUR" required class="vevo-input w-full uppercase">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Date of Birth (DD/MM/YYYY) *</label>
+                        <input type="text" id="admDob" placeholder="12/06/1992" required class="vevo-input w-full">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Passport / Document Number *</label>
+                        <input type="text" id="admDocNumber" placeholder="e.g. A12345678" required class="vevo-input w-full uppercase font-mono">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Country of Document *</label>
+                        <select id="admCountry" class="vevo-select w-full" required>
+                                                               <option value="">Country</option>
+                                   <!-- South Asia (Primary Source of Students & Skilled Migrants) -->
+                                   <option value="BANGLADESH" selected>BANGLADESH</option>
+                                   <option value="INDIA">INDIA</option>
+                                   <option value="PAKISTAN">PAKISTAN</option>
+                                   <option value="NEPAL">NEPAL</option>
+                                   <option value="SRI LANKA">SRI LANKA</option>
+                                   <option value="BHUTAN">BHUTAN</option>
+                                   
+                                   <!-- Southeast Asia & East Asia (Major Workforce & Student Hubs) -->
+                                   <option value="PHILIPPINES">PHILIPPINES</option>
+                                   <option value="VIETNAM">VIETNAM</option>
+                                   <option value="INDONESIA">INDONESIA</option>
+                                   <option value="MALAYSIA">MALAYSIA</option>
+                                   <option value="THAILAND">THAILAND</option>
+                                   <option value="CHINA">CHINA</option>
+                                   <option value="HONG KONG">HONG KONG (SAR CHINA)</option>
+                                   <option value="TAIWAN">TAIWAN</option>
+                                   <option value="SOUTH KOREA">SOUTH KOREA</option>
+                                   <option value="JAPAN">JAPAN</option>
+                                   <option value="SINGAPORE">SINGAPORE</option>
+                                  
+                                  <!-- Middle East & Gulf (Expat Workforce Hubs) -->
+                                  <option value="UNITED ARAB EMIRATES">UNITED ARAB EMIRATES</option>
+                                  <option value="SAUDI ARABIA">SAUDI ARABIA</option>
+                                  <option value="QATAR">QATAR</option>
+                                  <option value="KUWAIT">KUWAIT</option>
+                                  <option value="OMAN">OMAN</option>
+                                  <option value="BAHRAIN">BAHRAIN</option>
+                                  <option value="TURKEY">TURKEY</option>
+                                  <option value="LEBANON">LEBANON</option>
+                                  <option value="IRAN">IRAN</option>
+                                  
+                                  <!-- Oceania & Pacific (Working Holiday & Bilateral Streams) -->
+                                  <option value="FIJI">FIJI</option>
+                                  <option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
+                                  <option value="NEW ZEALAND">NEW ZEALAND</option>
+                                  
+                                  <!-- Europe & UK (Working Holiday & Skilled Professionals) -->
+                                  <option value="UNITED KINGDOM">UNITED KINGDOM (BRITISH CITIZEN)</option>
+                                  <option value="IRELAND">IRELAND</option>
+                                  <option value="GERMANY">GERMANY</option>
+                                  <option value="FRANCE">FRANCE</option>
+                                  <option value="ITALY">ITALY</option>
+                                  <option value="SPAIN">SPAIN</option>
+                                  
+                                  <!-- Americas & Africa (Skilled Streams) -->
+                                  <option value="CANADA">CANADA</option>
+                                  <option value="UNITED STATES">UNITED STATES OF AMERICA</option>
+                                  <option value="BRAZIL">BRAZIL</option>
+                                  <option value="COLOMBIA">COLOMBIA</option>
+                                  <option value="SOUTH AFRICA">SOUTH AFRICA</option>
+                                  <option value="KENYA">KENYA</option>
+                                  <option value="NIGERIA">NIGERIA</option>
+                                  
+                                  <!-- General Option -->
+                                  <option value="OTHER">OTHER NATION</</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Visa Grant Number (13 Digits) *</label>
+                        <input type="text" id="admGrantNumber" placeholder="e.g. 9876543210123" required class="vevo-input w-full font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Visa Description *</label>
+                        <input type="text" id="admVisaDesc" placeholder="e.g. Student / Visitor / TSS Work" required class="vevo-input w-full">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Subclass Code *</label>
+                        <input type="text" id="admSubclass" placeholder="e.g. TU-500 / FA-600 / TSS-482" required class="vevo-input w-full">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Visa Status *</label>
+                        <select id="admVisaStatus" class="vevo-select w-full">
+                            <option value="In Effect">In Effect (Active)</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Grant Date (DD/MM/YYYY) *</label>
+                        <input type="text" id="admGrantDate" placeholder="15/01/2025" required class="vevo-input w-full">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Expiry Date / Stay Period *</label>
+                        <input type="text" id="admExpiryDate" placeholder="15/03/2028 or Multiple Stay" required class="vevo-input w-full">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Entries</label>
+                        <input type="text" id="admEntries" value="Multiple entries" class="vevo-input w-full">
+                    </div>
+                </div>
+
+                <div class="mt-4 text-xs">
+                    <label class="block font-bold text-slate-700 mb-1">Visa Conditions (Separate with semicolon ';')</label>
+                    <input type="text" id="admConditions" placeholder="8105 - WORK LIMITATION; 8202 - MEET COURSE REQUIREMENTS; 8501 - MAINTAIN HEALTH INSURANCE" class="vevo-input w-full">
+                </div>
+
+                <div class="mt-5 flex items-center gap-3">
+                    <button type="submit" id="saveBtn" class="px-5 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span id="saveBtnText">Save to Firebase & Sync</span>
+                    </button>
+                    <button type="button" onclick="cancelEdit()" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs font-semibold">
+                        Cancel
+                    </button>
+                    <span id="actionStatusMsg" class="text-xs font-bold text-emerald-600 hidden"></span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Records Table -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900">
+                        Live Visa Records in Database (<span id="recordCount">0</span>)
+                    </h2>
+                    <div class="text-xs text-slate-500">
+                        Changes here are immediately searchable by users in <span class="font-mono text-blue-700">vevo_user.html</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="loadAllRecords()" class="text-xs px-3 py-1.5 rounded border border-slate-300 bg-slate-50 hover:bg-slate-100 font-semibold text-slate-700">
+                        <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <table class="w-full text-xs text-left text-slate-700">
+                    <thead class="bg-slate-100 text-slate-800 border-b font-bold">
+                        <tr>
+                            <th class="p-3">Name</th>
+                            <th class="p-3">Passport No</th>
+                            <th class="p-3">Country</th>
+                            <th class="p-3">Grant Number</th>
+                            <th class="p-3">Subclass</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="7" class="p-6 text-center text-slate-400">
+                                <i class="fa-solid fa-spinner fa-spin text-lg me-2"></i> Connecting to Firebase and fetching records...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 🔥 আপনার দেওয়া Firebase কনফিগারেশন
+        const firebaseConfig = {
+            apiKey: "AIzaSyDgiL1iFUfbs1iaP6v_YPadbn49eiku1WE",
+            authDomain: "webpagecybersecurity.firebaseapp.com",
+            projectId: "webpagecybersecurity",
+            storageBucket: "webpagecybersecurity.firebasestorage.app",
+            messagingSenderId: "664983277240",
+            appId: "1:664983277240:web:f7e0352f673713fe596e4d"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+
+        const DB_KEY = "VEVO_PORTAL_DATABASE_STORE";
+        let localRecords = [];
+
+        const SAMPLE_DATA = [
+            {
+                id: "VEVO-1001",
+                familyName: "RAHMAN",
+                givenNames: "MD ABDUR",
+                dob: "12/06/1992",
+                docNumber: "A12345678",
+                docCountry: "BANGLADESH",
+                grantNumber: "9876543210123",
+                visaDescription: "Student",
+                subclass: "TU-500",
+                status: "In Effect",
+                grantDate: "15/01/2025",
+                expiryDate: "15/03/2028",
+                entries: "Multiple entries",
+                location: "Offshore",
+                conditions: [
+                    "8105 - WORK LIMITATION (48 HOURS PER FORTNIGHT)",
+                    "8202 - MEET COURSE REQUIREMENTS & MAINTAIN ENROLMENT",
+                    "8501 - MAINTAIN ADEQUATE HEALTH INSURANCE (OSHC)"
+                ]
+            },
+            {
+                id: "VEVO-1002",
+                familyName: "ISLAM",
+                givenNames: "SHAHIDUL",
+                dob: "20/04/1988",
+                docNumber: "B87654321",
+                docCountry: "BANGLADESH",
+                grantNumber: "1122334455667",
+                visaDescription: "Temporary Skill Shortage",
+                subclass: "TSS-482",
+                status: "In Effect",
+                grantDate: "05/08/2024",
+                expiryDate: "05/08/2027",
+                entries: "Multiple entries",
+                location: "Onshore",
+                conditions: [
+                    "8607 - MUST WORK ONLY IN NOMINATED OCCUPATION",
+                    "8501 - MAINTAIN ADEQUATE HEALTH COVER"
+                ]
+            }
+        ];
+
+        // লোড ও লিসেনার
+        function initFirebaseSync() {
+            database.ref('vevo_records').on('value', (snapshot) => {
+                const fbData = snapshot.val();
+                localRecords = [];
+                if (fbData) {
+                    Object.keys(fbData).forEach(key => {
+                        localRecords.push(fbData[key]);
+                    });
+                }
+                // ব্যাকআপ হিসেবে লোকাল স্টোরেজেও রাখা
+                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
+                renderTable();
+            }, (error) => {
+                console.warn("Firebase fetch error, falling back to localStorage:", error);
+                const stored = localStorage.getItem(DB_KEY);
+                localRecords = stored ? JSON.parse(stored) : SAMPLE_DATA;
+                renderTable();
+            });
+        }
+
+        function loadAllRecords() {
+            database.ref('vevo_records').once('value').then((snapshot) => {
+                const fbData = snapshot.val();
+                localRecords = [];
+                if (fbData) {
+                    Object.keys(fbData).forEach(key => {
+                        localRecords.push(fbData[key]);
+                    });
+                }
+                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
+                renderTable();
+            });
+        }
+
+        function renderTable() {
+            document.getElementById("recordCount").innerText = localRecords.length;
+            const tbody = document.getElementById("recordsTableBody");
+            tbody.innerHTML = "";
+
+            if (localRecords.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">No records found in database. Add a new record above or click "Seed Sample".</td></tr>`;
+                return;
+            }
+
+            localRecords.forEach(rec => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold">${escapeHtml(rec.familyName)}, ${escapeHtml(rec.givenNames)}</td>
+                    <td class="p-3 font-mono font-semibold text-blue-900">${escapeHtml(rec.docNumber)}</td>
+                    <td class="p-3">${escapeHtml(rec.docCountry)}</td>
+                    <td class="p-3 font-mono">${escapeHtml(rec.grantNumber)}</td>
+                    <td class="p-3 font-bold text-blue-700">${escapeHtml(rec.subclass)}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${rec.status === 'In Effect' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+                            ${escapeHtml(rec.status)}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="editRecord('${escapeHtml(rec.docNumber)}')" title="Edit" class="text-amber-600 hover:text-amber-800 font-semibold px-2 py-1 rounded bg-amber-50 border border-amber-200">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteRecord('${escapeHtml(rec.docNumber)}')" title="Delete" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 rounded bg-red-50 border border-red-200">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function handleSaveRecord(e) {
+            e.preventDefault();
+            const saveBtn = document.getElementById("saveBtn");
+            const btnText = document.getElementById("saveBtnText");
+            const statusMsg = document.getElementById("actionStatusMsg");
+
+            saveBtn.disabled = true;
+            btnText.innerText = "Saving to Cloud...";
+
+            const docNumber = document.getElementById("admDocNumber").value.trim().toUpperCase();
+            const condRaw = document.getElementById("admConditions").value;
+            const condArr = condRaw ? condRaw.split(";").map(s => s.trim()).filter(Boolean) : [
+                "8105 - WORK LIMITATION",
+                "8202 - MEET COURSE REQUIREMENTS",
+                "8501 - MAINTAIN HEALTH INSURANCE"
+            ];
+
+            const record = {
+                id: document.getElementById("editRecordId").value || ("VEVO-" + Date.now().toString().slice(-6)),
+                familyName: document.getElementById("admFamilyName").value.trim().toUpperCase(),
+                givenNames: document.getElementById("admGivenNames").value.trim().toUpperCase(),
+                dob: document.getElementById("admDob").value.trim(),
+                docNumber: docNumber,
+                docCountry: document.getElementById("admCountry").value,
+                grantNumber: document.getElementById("admGrantNumber").value.trim(),
+                visaDescription: document.getElementById("admVisaDesc").value.trim(),
+                subclass: document.getElementById("admSubclass").value.trim().toUpperCase(),
+                status: document.getElementById("admVisaStatus").value,
+                grantDate: document.getElementById("admGrantDate").value.trim(),
+                expiryDate: document.getElementById("admExpiryDate").value.trim(),
+                entries: document.getElementById("admEntries").value.trim() || "Multiple entries",
+                location: "Offshore",
+                conditions: condArr
+            };
+
+            try {
+                // ১. ফায়ারবেসে সেভ করা (পাসপোর্ট নম্বরকে কি/আইডি হিসেবে রাখা)
+                await database.ref('vevo_records/' + docNumber).set(record);
+
+                // ২. লোকাল কপি আপডেট
+                const existingIdx = localRecords.findIndex(r => r.docNumber === docNumber);
+                if (existingIdx !== -1) {
+                    localRecords[existingIdx] = record;
+                } else {
+                    localRecords.unshift(record);
+                }
+                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
+
+                statusMsg.innerText = "✅ Successfully saved to Firebase!";
+                statusMsg.classList.remove("hidden");
+                setTimeout(() => statusMsg.classList.add("hidden"), 3500);
+
+                cancelEdit();
+                renderTable();
+            } catch (err) {
+                console.error("Firebase save error:", err);
+                alert("Error saving to Firebase. Please check database permissions.");
+            } finally {
+                saveBtn.disabled = false;
+                btnText.innerText = "Save to Firebase & Sync";
+            }
+        }
+
+        function editRecord(docNum) {
+            const rec = localRecords.find(r => r.docNumber === docNum);
+            if (!rec) return;
+
+            document.getElementById("editRecordId").value = rec.id || "";
+            document.getElementById("admFamilyName").value = rec.familyName;
+            document.getElementById("admGivenNames").value = rec.givenNames;
+            document.getElementById("admDob").value = rec.dob;
+            document.getElementById("admDocNumber").value = rec.docNumber;
+            document.getElementById("admCountry").value = rec.docCountry;
+            document.getElementById("admGrantNumber").value = rec.grantNumber;
+            document.getElementById("admVisaDesc").value = rec.visaDescription;
+            document.getElementById("admSubclass").value = rec.subclass;
+            document.getElementById("admVisaStatus").value = rec.status;
+            document.getElementById("admGrantDate").value = rec.grantDate;
+            document.getElementById("admExpiryDate").value = rec.expiryDate;
+            document.getElementById("admEntries").value = rec.entries || "Multiple entries";
+            document.getElementById("admConditions").value = rec.conditions ? rec.conditions.join("; ") : "";
+
+            document.getElementById("formTitle").innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-600"></i> Edit Record: ${rec.familyName} (${rec.docNumber})`;
+            document.getElementById("saveBtnText").innerText = "Update & Sync to Firebase";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            document.getElementById("visaRecordForm").reset();
+            document.getElementById("editRecordId").value = "";
+            document.getElementById("formTitle").innerHTML = `<i class="fa-solid fa-user-plus text-blue-600"></i> Add New Visa Record (Firebase Live)`;
+            document.getElementById("saveBtnText").innerText = "Save to Firebase & Sync";
+        }
+
+        async function deleteRecord(docNum) {
+            if (!confirm(`Are you sure you want to delete visa record for passport: ${docNum}?`)) return;
+
+            try {
+                // ফায়ারবেস থেকে রিমুভ
+                await database.ref('vevo_records/' + docNum).remove();
+
+                localRecords = localRecords.filter(r => r.docNumber !== docNum);
+                localStorage.setItem(DB_KEY, JSON.stringify(localRecords));
+                renderTable();
+            } catch (err) {
+                console.error("Firebase deletion error:", err);
+                alert("Failed to delete from Firebase.");
+            }
+        }
+
+        async function resetSampleData() {
+            if (!confirm("This will upload default sample records to Firebase. Continue?")) return;
+
+            try {
+                for (let rec of SAMPLE_DATA) {
+                    await database.ref('vevo_records/' + rec.docNumber).set(rec);
+                }
+                loadAllRecords();
+                alert("Sample records seeded successfully to Firebase!");
+            } catch (err) {
+                console.error("Seeding error:", err);
+                alert("Failed to seed data.");
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return "";
+            return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            initFirebaseSync();
+        });
+    </script>
+</body>
+</html>
